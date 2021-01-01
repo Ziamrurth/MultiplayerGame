@@ -314,15 +314,16 @@ MonoBehaviour:
   onlineScene: 
   transport: {fileID: 831017464}
   networkAddress: localhost
-  maxConnections: 4
-  disconnectInactiveConnections: 0
+  maxConnections: 10
+  disconnectInactiveConnections: 1
   disconnectInactiveTimeout: 60
   authenticator: {fileID: 0}
   playerPrefab: {fileID: 7356276215833257740, guid: 5e3585cd956d8d04d88b80a473893514,
     type: 3}
   autoCreatePlayer: 1
   playerSpawnMethod: 0
-  spawnPrefabs: []
+  spawnPrefabs:
+  - {fileID: 107638463500836541, guid: 87f9e081e9a071040938f6ac1abf3a84, type: 3}
 --- !u!4 &831017466
 Transform:
   m_ObjectHideFlags: 0

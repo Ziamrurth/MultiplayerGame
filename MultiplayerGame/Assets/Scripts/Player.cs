@@ -11,7 +11,7 @@ public class Player : NetworkBehaviour {
     float speedScale = 1f;
 
     float moveHorizontal = 0;
-    float moveVertical = 0;
+    float moveVertical = 1;
 
     [SerializeField]
     CinemachineVirtualCamera mainCamera;
@@ -46,7 +46,7 @@ public class Player : NetworkBehaviour {
     void Start()
     {
         MountCamera();
-        RandomiseMovement();
+        //RandomiseMovement();
     }
 
     void Update()
