@@ -3,20 +3,36 @@ using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
 
-public class GunShooting : MonoBehaviour {
+public class GunShooting : NetworkBehaviour {
 
     [SerializeField]
-    GameObject bulletSpawner;
+    GameObject bulletSpawnPoint;
     [SerializeField]
-    GameObject bullet;
+    GameObject bulletPrefab;
     
-    void Createbullet() {
-        GameObject newBullet = Instantiate(bullet, bulletSpawner.transform.position, bulletSpawner.transform.rotation);
-        //NetworkServer.Spawn(newBullet);
-    }
+    //void Createbullet() {
+    //    GameObject newBullet = Instantiate(bullet, bulletSpawnPoint.transform.position, bulletSpawnPoint.transform.rotation);
+    //    //NetworkServer.Spawn(newBullet);
+    //}
 
     private void OnMouseDown() {
-        Createbullet();
+        Debug.Log("Click on gun");
+        CmdSpawnBullet();
+    }
+
+    [Command(ignoreAuthority = true)]
+    void CmdSpawnBullet()
+    {
+        if(bulletPrefab != null)
+        {
+            Debug.Log("Bullet spawned");
+            GameObject newBullet = Instantiate(bulletPrefab, bulletSpawnPoint.transform.position, bulletSpawnPoint.transform.rotation);
+            NetworkServer.Spawn(newBullet);
+        }
+        else
+        {
+            Debug.Log("Prefab is null");
+        }
     }
 
 }

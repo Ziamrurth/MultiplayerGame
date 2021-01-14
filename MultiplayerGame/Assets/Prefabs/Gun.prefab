@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 42788667062107415}
   - component: {fileID: 3956053054249524043}
   - component: {fileID: 8245664654082984715}
-  - component: {fileID: 6931074015066054611}
   m_Layer: 0
   m_Name: Gun
   m_TagString: Untagged
@@ -95,22 +94,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &6931074015066054611
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3869298108566568076}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 662f1a690e344144c9003c802fec29f0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  syncMode: 0
-  syncInterval: 0.1
-  bulletSpawner: {fileID: 8893823088548933231}
-  bullet: {fileID: 107638463500836541, guid: 87f9e081e9a071040938f6ac1abf3a84, type: 3}
 --- !u!1 &8893823088548933231
 GameObject:
   m_ObjectHideFlags: 0
@@ -121,7 +104,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7676066452406195107}
   m_Layer: 0
-  m_Name: BulletSpawner
+  m_Name: BulletSpawnPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
