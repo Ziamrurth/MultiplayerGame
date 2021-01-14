@@ -38,12 +38,12 @@ namespace MultiplayerGameServer {
                 stream = socket.GetStream();
                 receiveBuffer = new byte[dataBufferSize];
 
-                stream.BeginRead(receiveBuffer, 0, dataBufferSize, ReceiveCallback, null);
+                stream.BeginRead(receiveBuffer, 0, dataBufferSize, ReceiveCallBack, null);
 
                 //TODO: send welcome packet
             }
 
-            private void ReceiveCallback(IAsyncResult _result)
+            private void ReceiveCallBack(IAsyncResult _result)
             {
                 try
                 {
@@ -58,7 +58,7 @@ namespace MultiplayerGameServer {
                     Array.Copy(receiveBuffer, _data, _byteLength);
 
                     //TODO: Handle data
-                    stream.BeginRead(receiveBuffer, 0, dataBufferSize, ReceiveCallback, null);
+                    stream.BeginRead(receiveBuffer, 0, dataBufferSize, ReceiveCallBack, null);
                 }
                 catch(Exception _ex)
                 {
