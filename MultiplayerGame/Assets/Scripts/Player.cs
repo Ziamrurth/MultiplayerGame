@@ -15,7 +15,7 @@ public class Player : NetworkBehaviour {
 
     float moveHorizontal = 0;
     float moveVertical = 1;
-
+    
 
     void HandleMovement()
     {
