@@ -10,11 +10,18 @@ namespace MultiplayerGameServer {
             string _username = _packet.ReadString();
 
             Console.WriteLine($"{Server.clients[_fromClient].tcp.socket.Client.RemoteEndPoint} connected successfully and is now player {_fromClient}");
-            if(_fromClient != _clientIdCheck)
+            if (_fromClient != _clientIdCheck)
             {
                 Console.WriteLine($"Player \"{_username}\" (ID: {_fromClient}) has assumed the wrong client ID ({_clientIdCheck})!");
             }
             //TODO: send player to the game
+        }
+
+        public static void UDPTestReceived(int _fromClient, Packet _packet)
+        {
+            string _msg = _packet.ReadString();
+
+            Console.WriteLine($"Received packet via UDP. Contains message: {_msg}");
         }
     }
 }

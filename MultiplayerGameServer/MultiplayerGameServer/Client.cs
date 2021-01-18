@@ -10,17 +10,19 @@ namespace MultiplayerGameServer {
 
         public int id;
         public TCP tcp;
+        public UDP udp;
 
         public Client(int _clientId)
         {
             id = _clientId;
             tcp = new TCP(id);
+            udp = new UDP(id);
         }
 
         public class TCP {
             public TcpClient socket;
 
-            public readonly int id;
+            private readonly int id;
             private NetworkStream stream;
             private Packet receivedData;
             private byte[] receiveBuffer;
@@ -41,7 +43,7 @@ namespace MultiplayerGameServer {
                 receivedData = new Packet();
                 receiveBuffer = new byte[dataBufferSize];
 
-                stream.BeginRead(receiveBuffer, 0, dataBufferSize, ReceiveCallBack, null);
+                stream.BeginRead(receiveBuffer, 0, dataBufferSize, ReceiveCallback, null);
 
                 ServerSend.Welcome(id, "Welcome to the server");
             }
@@ -50,23 +52,23 @@ namespace MultiplayerGameServer {
             {
                 try
                 {
-                    if(socket != null)
+                    if (socket != null)
                     {
                         stream.BeginWrite(_packet.ToArray(), 0, _packet.Length(), null, null);
                     }
                 }
-                catch(Exception _ex)
+                catch (Exception _ex)
                 {
-                    Console.WriteLine($"Error sending data to player {id} via TCP {_ex}");
+                    Console.WriteLine($"Error sending data to player {id} via TCP: {_ex}");
                 }
             }
 
-            private void ReceiveCallBack(IAsyncResult _result)
+            private void ReceiveCallback(IAsyncResult _result)
             {
                 try
                 {
                     int _byteLength = stream.EndRead(_result);
-                    if(_byteLength <= 0)
+                    if (_byteLength <= 0)
                     {
                         //TODO: disconnect
                         return;
@@ -76,9 +78,9 @@ namespace MultiplayerGameServer {
                     Array.Copy(receiveBuffer, _data, _byteLength);
 
                     receivedData.Reset(HandleData(_data));
-                    stream.BeginRead(receiveBuffer, 0, dataBufferSize, ReceiveCallBack, null);
+                    stream.BeginRead(receiveBuffer, 0, dataBufferSize, ReceiveCallback, null);
                 }
-                catch(Exception _ex)
+                catch (Exception _ex)
                 {
                     Console.WriteLine($"Error receiving TCP data: {_ex}");
 
@@ -130,6 +132,43 @@ namespace MultiplayerGameServer {
                 }
 
                 return false;
+            }
+        }
+
+        public class UDP {
+            public IPEndPoint endPoint;
+
+            private int id;
+
+            public UDP(int _id)
+            {
+                id = _id;
+            }
+
+            public void Connect(IPEndPoint _endPoint)
+            {
+                endPoint = _endPoint;
+                ServerSend.UDPTest(id);
+            }
+
+            public void SendData(Packet _packet)
+            {
+                Server.SendUDPData(endPoint, _packet);
+            }
+
+            public void HandleData(Packet _packetData)
+            {
+                int _packetLength = _packetData.ReadInt();
+                byte[] _packetBytes = _packetData.ReadBytes(_packetLength);
+
+                ThreadManager.ExecuteOnMainThread(() =>
+                {
+                    using (Packet _packet = new Packet(_packetBytes))
+                    {
+                        int _packetId = _packet.ReadInt();
+                        Server.packetHandlers[_packetId](id, _packet);
+                    }
+                });
             }
         }
     }
