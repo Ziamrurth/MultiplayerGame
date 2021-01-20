@@ -210,3 +210,6 @@ _NCrunch*
 
 # Ignore project clone
 MultiplayerGame_clone_0/
+
+#Ignore builds
+Builds/
